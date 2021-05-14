@@ -75,4 +75,14 @@ class OvenTest {
 
     }
 
+    @Test
+    void ifHeatTypeIsGrillGrillShouldBeCalled(){
+        ProgramStage stageStub = ProgramStage.builder().withHeat(HeatType.GRILL).withStageTime(10).withTargetTemp(320).build();
+        stages.add(stageStub);
+        bakingProgram = BakingProgram.builder().withInitialTemp(30).withStages(stages).build();
+        oven.start(bakingProgram);
+        Mockito.verify(heatingModuleMock,Mockito.times(1)).grill(any());
+
+    }
+
 }
