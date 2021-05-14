@@ -85,4 +85,25 @@ class OvenTest {
 
     }
 
+    @Test
+    void ifHeatTypeIsHeaterHeaterShouldBeCalled(){
+        ProgramStage stageStub = ProgramStage.builder().withHeat(HeatType.GRILL).withStageTime(10).withTargetTemp(320).build();
+        stages.add(stageStub);
+        bakingProgram = BakingProgram.builder().withInitialTemp(30).withStages(stages).build();
+        oven.start(bakingProgram);
+        Mockito.verify(heatingModuleMock,Mockito.times(1)).heater(any());
+
+    }
+
+    @Test
+    void ifHeatTypeIsNotGrillGrillShouldntBeCalled(){
+        ProgramStage stageStub = ProgramStage.builder().withHeat(HeatType.THERMO_CIRCULATION).withStageTime(10).withTargetTemp(320).build();
+        stages.add(stageStub);
+        bakingProgram = BakingProgram.builder().withInitialTemp(30).withStages(stages).build();
+        oven.start(bakingProgram);
+        Mockito.verify(heatingModuleMock,Mockito.never()).grill(any());
+
+    }
+
+
 }
