@@ -65,4 +65,14 @@ class OvenTest {
 
     }
 
+    @Test
+    void fanOffShouldBeCalledOnce(){
+        ProgramStage stageStub = ProgramStage.builder().withHeat(HeatType.HEATER).withStageTime(80).withTargetTemp(270).build();
+        stages.add(stageStub);
+        bakingProgram = BakingProgram.builder().withInitialTemp(0).withStages(stages).build();
+        oven.start(bakingProgram);
+        Mockito.verify(fanMock,Mockito.times(1)).off();
+
+    }
+
 }
